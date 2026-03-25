@@ -86,24 +86,9 @@ The Engine continuously scans AWS environments, detects real-world risks, calcul
 
 ## 4. Architecture
 
-At its core, the tool is a purely serverless, event-driven engine engineered for strict internal least-privilege computing.
+![Cloud Security Audit Engine — System Architecture](./architecture.png)
 
-```text
-[ Target App Environment ]
-       ↓ (Scan Triggers via EventBridge / API Gateway)
-+-------------------------------------------------------------+
-|                     Scan Engine (Lambda)                    |
-|  [IAM Scanner]  [API Scanner]  [Config/Secrets Scanner]     |
-+-------------------------------------------------------------+
-       ↓ (Raw Vulnerability Intelligence)
-[ Risk Scoring Engine ] → Calculates: Impact × Exploitability
-       ↓ (Prioritized Data)
-[ Secure Storage ] → DynamoDB (Customer Managed KMS Encrypted)
-       ↓
-[ API Layer ] → API Gateway (Strict IAM Auth + WAF Protected)
-       ↓
-[ Operations Dashboard ] → React (Visibility into Critical Risks)
-```
+At its core, the tool is a purely serverless, event-driven engine engineered for strict internal least-privilege computing. Scans are triggered by EventBridge on a cron schedule or via API Gateway for ad-hoc validation. The four scanner modules run inside a single Lambda function, feed raw findings through the Risk Scoring Engine, and persist the final report to KMS-encrypted DynamoDB with a 90-day TTL.
 
 ## 5. Security Philosophy & Abuse Focus
 
