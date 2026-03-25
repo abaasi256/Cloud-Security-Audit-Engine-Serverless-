@@ -2,6 +2,8 @@
 
 > A high-signal, execution-focused security scanning engine designed to detect, score, and simulate realistic abuse paths in AWS environments.
 
+**Designed for exchange-scale environments to simulate real attack paths including API abuse, IAM escalation, and credential exposure.**
+
 ## Overview
 
 Traditional CSPMs generate massive volumes of low-impact, compliance-driven alerts. This project takes an attacker-driven approach, functioning as an internal security engine that directly models impact and exploitability across cloud-native (serverless) infrastructure.
@@ -98,6 +100,15 @@ Most scanners tell you what is "open." This engine tells you *how it can be abus
 - **IAM Toxic Combinations:** Focuses heavily on identifying chains of permissions (e.g., `lambda:UpdateFunctionCode` + `iam:PassRole`) rather than just flagging `AdministratorAccess`.
 - **Active Verification:** The API scanner doesn't just read the API Gateway config; it attempts a short burst of rapid requests to verify if WAF thresholds successfully drop the traffic.
 - **Zero Trust Operations:** The scanner infrastructure itself runs with strict execution boundaries, ensuring a compromised scanner cannot be leveraged to pivot into the target environment.
+
+## 6. Exchange Threat Model Alignment
+
+The engine is engineered to identify risks that directly threaten high-availability financial platforms:
+
+- **API Abuse & Logic Hijacking:** Detecting rate limit bypass via header manipulation and unauthenticated path exposure.
+- **Credential & Key Misuse:** Identifying leaked tokens in environment variables and broad S3 access.
+- **IAM Privilege Escalation:** Mapping toxic permission combinations (e.g., `iam:PassRole` + `lambda:CreateFunction`).
+- **Surface Exposure:** Auditing public-facing serverless components and unencrypted storage.
 
 ## 6. Attack Chain Example
 
