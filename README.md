@@ -158,5 +158,11 @@ All active probes are intentionally bounded to prevent becoming a cost vector th
 
 This signals the same engineering discipline expected of production internal tooling: **the scanner cannot be weaponised against itself or others.**
 
+## 8. Validation Context
+
+This tool was tested against intentionally misconfigured AWS environments designed to simulate real-world attack paths — specifically: IAM privilege escalation via `iam:PassRole` abuse, unauthenticated API Gateway endpoints without WAF coverage, and public S3 buckets with legacy ACL grants.
+
+All scanner findings were verified manually against the target environment to confirm accuracy and eliminate false positives before the risk scores were finalized. The header manipulation bypass test (`X-Forwarded-For` rotation) was validated against both WAF-protected and unprotected API stages to confirm the detection logic correctly differentiates enforced from misconfigured rate limiting.
+
 ---
 *Built to demonstrate practical, attacker-informed cloud security engineering.*
